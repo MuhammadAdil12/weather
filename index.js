@@ -20,43 +20,26 @@ async function temperature(){
 
     update()
 
-    
-    
     const cityInputName = inputText.value
-
-    
     if(cityInputName.length > 1){
-
-
-    
-        
     const response = await fetch(apiUrl + cityInputName + `&appid=${apiKey}`);
 
             if (response.status === 404) {
-                // let data = await response.json();
                 alert("Wrong Name / Spelling")
                 throw new Error("Wrong Name / Spelling")
             }
        
     let data = await response.json();
-    console.log(data);
+    // console.log(data);
 
 
-
-
-
-
-
-    
     let _cityName = data.name
     let _temp = data.main.temp
     let _weatherCondition = data.weather[0].main
 
-    // console.log(_weatherCondition);
 
-    
-    
-        
+
+
 
     let div = document.createElement("div")
     div.className = " d-flex flex-column justify-content-center align-items-center"
@@ -73,17 +56,21 @@ async function temperature(){
         
     }else if(_weatherCondition == "Rain"){
         img.src = "raining.png";
-        document.body.style.backgroundImage = "linear-gradient(90deg, #c4e0e5, #4ca1af)"
+        document.body.style.background = "linear-gradient(90deg, #c4e0e5, #4ca1af)"
 
         
     }else if(_weatherCondition == "Drizzle"){
         img.src = "drizzle.png";
-        document.body.style.backgroundImage =  "linear-gradient(90deg, #44A08D, #093637)"
+        document.body.style.background =  "linear-gradient(90deg, #44A08D, #093637)"
 
         
-    }else if(_weatherCondition == "Mist"){
+    }else if(_weatherCondition == "Mist"|| _weatherCondition == "Smoke" ||
+     _weatherCondition == "Haze" || _weatherCondition == "Fog" ||  _weatherCondition == "Sand"  ||
+       _weatherCondition == "Dust" ||  _weatherCondition == "Ash"||
+         _weatherCondition == "Squall"|| _weatherCondition == "Tornado"){
+
         img.src = "mist.png";
-        document.body.style.backgroundImage = "url('misty-img.jpg')"
+        document.body.style.backgroundImage = "linear-gradient(90deg, #Dfe3d0, #b9bdc1)"
         
     }
 
@@ -96,11 +83,9 @@ async function temperature(){
     _h1.className = "city-name";
     _h1.textContent = _cityName;
 
-
     div.appendChild(img)
     div.appendChild(h1)
     div.appendChild(_h1)
-
 
     document.querySelector(".main-container").appendChild(div)
 
@@ -114,7 +99,6 @@ async function temperature(){
     }
 
 }
-
 
 
 function humidityWind(data){
@@ -199,15 +183,11 @@ function tempLogLat(data){
     let _lat = data.coord.lat
 
 
-
-
     let div0 = document.createElement("div")
     div0.className = "second-half-dev-1 mb-4"
 
     let div1 = document.createElement("div")
     div1.className = "humidity-dev"
-
-    
 
     let innerDiv = document.createElement("div")
     innerDiv.className = "col"
@@ -260,33 +240,23 @@ function tempLogLat(data){
 
 }
 
-
-// https://api.timezonedb.com/v2.1/get-time-zone?key=PC6WROD4W0YM&format=json&by=position&
-// lat=40.689247
-// &lng=-74.044502
-
-
 async function timeFeelLike(data){
-
-   
 
     let _lon = data.coord.lon
     let _lat = data.coord.lat
-       
         
     const response = await fetch(timeZoneDb + `lat=${_lat}` + `&lng=${_lon}`);
         if (!response.ok) {
             throw new Error(`Fetch request failed with status ${response.status}`);
             }
         const geoData = await response.json();
-        console.log(geoData);
+        
+        // console.log(geoData);
         
 
     let _feelsLike = data.main.feels_like
     let cityTime = geoData.formatted
     let _zoneName = geoData.zoneName
-
-
 
 
     let div = document.createElement("div")
@@ -311,7 +281,6 @@ async function timeFeelLike(data){
 
 //!  creating the zoneName div
 
-
     let _div_ = document.createElement("div")
     _div_.className = " d-flex flex-column justify-content-center align-items-center m-2"
     
@@ -320,21 +289,12 @@ async function timeFeelLike(data){
     
     _div_.appendChild(_h5_)
     
-    
-    
     document.querySelector(".main-container").appendChild(div)
     document.querySelector(".main-container").appendChild(_div)
     document.querySelector(".main-container").appendChild(_div_)
-
-
 }
 
-
 searchBtn.addEventListener("click", temperature)
-
-
-
-
 inputText.addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
       // code for enter
